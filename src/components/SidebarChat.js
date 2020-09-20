@@ -8,8 +8,8 @@ const SidebarChat = () => {
 			<Avatar />
 
 			<div className="sidebarChat__info">
-				<h2>Crushie</h2>
-				<p>Hey, check this out...</p>
+				<h2>Kit Kat</h2>
+				<p>Hey, check this out. I just got you...</p>
 			</div>
 		</div>
 	);
