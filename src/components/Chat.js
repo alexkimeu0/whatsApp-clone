@@ -4,6 +4,8 @@ import { Avatar, IconButton } from "@material-ui/core";
 
 import "./Chat.css";
 import { MoreVert, SearchOutlined, AttachFile } from "@material-ui/icons";
+import InsertEmoticonIcon from "@material-ui/icons/InsertEmoticon";
+import MicIcon from "@material-ui/icons/Mic";
 
 const Chat = () => {
 	return (
@@ -58,6 +60,19 @@ const Chat = () => {
 					like 'The Flash'.
 					<span className="chat__timestamp">{new Date().toUTCString()}</span>
 				</p>
+			</div>
+
+			<div className="chat__footer">
+				<InsertEmoticonIcon />
+				<form>
+					<input
+						type="text"
+						placeholder="Type a message"
+						// onChange={(e) => setInput(e.target.value)}
+					/>
+					<button type="submit">Send a Message</button>
+				</form>
+				<MicIcon />
 			</div>
 		</div>
 	);
