@@ -3,6 +3,12 @@ import mongoose from "mongoose";
 import Pusher from "pusher";
 import cors from "cors";
 import Messages from "./dbMessages.js";
+import User from "./users.js";
+import passport from "passport";
+import session from "express-session";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 // App initialization
 const app = express();
@@ -20,11 +26,36 @@ const pusher = new Pusher({
 	encrypted: true,
 });
 
+// Set up app to use session
+app.use(
+	session({
+		secret: process.env.SESSION_SECRET,
+		resave: true,
+		saveUninitialized: true,
+		cookie: { secure: false },
+	})
+);
+
+// Set up app to use passport
+app.use(passport.initialize());
+app.use(passport.session());
+
+// Serialize user
+// passport.serializeUser((user, done) => {
+// 	done(null, user.id);
+// });
+
+// // Deserialize user
+// passport.deserializeUser((id, done) => {
+// 	User.findById(id, (err, user) => {
+// 		done(err, user);
+// 	});
+// });
+
 // Database connection
 const db = mongoose.connection;
 
-const DB_URI =
-	"mongodb+srv://admin:Soda3291!@cluster0.nzhbt.mongodb.net/whatsappdb?retryWrites=true&w=majority";
+const DB_URI = process.env.MONGO_URI;
 
 mongoose.connect(DB_URI, {
 	useNewUrlParser: true,
@@ -79,6 +110,39 @@ app.post("/messages/add", (req, res) => {
 			res.status(201).send(data);
 		}
 	});
+});
+
+// User routes - Return all users
+app.get("/users", (req, res) => {
+	User.find((err, data) => {
+		if (err) {
+			res.status(500).send(err);
+		} else {
+			res.status(200).send(data);
+		}
+	});
+});
+
+// Register new user
+app.post("/users/register", (req, res) => {
+	const { email, username, password } = req.body;
+
+	console.log(req.body);
+
+	// Check if user already exists
+	// const user = User.findOne(email);
+
+	// if (user) {
+	// 	res.status(400).send("User Already Exists!");
+	// } else {
+	const newUser = new User({
+		email,
+		username,
+		password,
+	});
+
+	newUser.save();
+	res.status(201).send(newUser);
 });
 
 // Listener
