@@ -13,7 +13,7 @@ import "./SideBar.css";
 const SideBar = () => {
 	return (
 		<div className="sidebar">
-			<div class="sidebar__header">
+			<div className="sidebar__header">
 				<Avatar src="https://pbs.twimg.com/profile_images/1301289515819167745/33NOaFzw_400x400.jpg" />
 				<div className="sidebar__headerRight">
 					<IconButton>
