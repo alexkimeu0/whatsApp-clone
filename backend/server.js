@@ -127,22 +127,21 @@ app.get("/users", (req, res) => {
 app.post("/users/register", (req, res) => {
 	const { email, username, password } = req.body;
 
-	console.log(req.body);
+	// Check if user already exists && if not add to DB
+	User.findOne({ email }, (err, user) => {
+		if (user) {
+			res.status(400).send("User Already Exists!");
+		} else {
+			const newUser = new User({
+				email,
+				username,
+				password,
+			});
 
-	// Check if user already exists
-	// const user = User.findOne(email);
-
-	// if (user) {
-	// 	res.status(400).send("User Already Exists!");
-	// } else {
-	const newUser = new User({
-		email,
-		username,
-		password,
+			newUser.save();
+			res.status(201).send(newUser);
+		}
 	});
-
-	newUser.save();
-	res.status(201).send(newUser);
 });
 
 // Listener

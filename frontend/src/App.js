@@ -7,6 +7,7 @@ import axios from "./axios";
 
 const App = () => {
 	const [messages, setMessages] = useState([]);
+
 	useEffect(() => {
 		axios.get("/messages").then((response) => {
 			setMessages(response.data);
@@ -30,7 +31,6 @@ const App = () => {
 		};
 	}, [messages]);
 
-	console.log(messages);
 	return (
 		<div className="app">
 			<div className="app__body">
